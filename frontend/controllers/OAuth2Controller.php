@@ -11,6 +11,7 @@ namespace frontend\controllers;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\Request;
+use OAuth2\Response;
 use OAuth2\Server;
 use OAuth2\Storage\Pdo;
 use yii;
@@ -45,6 +46,28 @@ class OAuth2Controller extends Controller{
         return json_encode(array('success'=>true, 'message'=>'access'));
     }
 
+    public function actionAuthorize(){
+
+        $request = Request::createFromGlobals();
+        $response = new Response();
+        if(!$this->_server->validationAuthorizeRequest($request, $response)){
+            return $response->send();
+        }
+        if(empty($_POST)){
+            return '<form method="post">
+                        <label>确认授权登录？</label><br/>
+                        <input type="submit" name="authorized" value="yes">
+                        <input type="submit" name="authorized" value="no">
+                    </form>
+                    ';
+        }
+        $is_authorized = (yii::$app->request->post('authorized') === 'yes');
+        $this->_server->handleAuthorizeRequest($request, $response, $is_authorized);
+        if($is_authorized){
+            $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);
+        }
+        return $response->send();
+    }
 
 
 
