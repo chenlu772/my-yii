@@ -5,23 +5,22 @@ namespace frontend\models;
 use Yii;
 
 /**
- * This is the model class for table "oauth_authorization_code".
+ * This is the model class for table "oauth_access_token".
  *
- * @property string $authorization_code
+ * @property string $access_token
  * @property string $client_id
  * @property string $user_id
- * @property string $redirect_uri
  * @property string $expires
  * @property string $scope
  */
-class OauthAuthorizationCode extends \common\models\OauthAuthorizationCode
+class OauthAccessTokens extends \common\models\OauthAccessToken
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'oauth_authorization_code';
+        return 'oauth_access_tokens';
     }
 
     /**
@@ -30,12 +29,12 @@ class OauthAuthorizationCode extends \common\models\OauthAuthorizationCode
     public function rules()
     {
         return [
-            [['authorization_code', 'client_id'], 'required'],
+            [['access_token', 'client_id'], 'required'],
             [['expires'], 'safe'],
-            [['authorization_code'], 'string', 'max' => 40],
+            [['access_token'], 'string', 'max' => 40],
             [['client_id'], 'string', 'max' => 80],
             [['user_id'], 'string', 'max' => 255],
-            [['redirect_uri', 'scope'], 'string', 'max' => 2000],
+            [['scope'], 'string', 'max' => 2000],
         ];
     }
 
@@ -45,10 +44,9 @@ class OauthAuthorizationCode extends \common\models\OauthAuthorizationCode
     public function attributeLabels()
     {
         return [
-            'authorization_code' => 'Authorization Code',
+            'access_token' => 'Access Token',
             'client_id' => 'Client ID',
             'user_id' => 'User ID',
-            'redirect_uri' => 'Redirect Uri',
             'expires' => 'Expires',
             'scope' => 'Scope',
         ];

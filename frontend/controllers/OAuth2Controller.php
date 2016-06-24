@@ -50,7 +50,7 @@ class OAuth2Controller extends Controller{
 
         $request = Request::createFromGlobals();
         $response = new Response();
-        if(!$this->_server->validationAuthorizeRequest($request, $response)){
+        if(!$this->_server->validateAuthorizeRequest($request, $response)){
             return $response->send();
         }
         if(empty($_POST)){
@@ -64,7 +64,8 @@ class OAuth2Controller extends Controller{
         $is_authorized = (yii::$app->request->post('authorized') === 'yes');
         $this->_server->handleAuthorizeRequest($request, $response, $is_authorized);
         if($is_authorized){
-            $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);
+            $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);//授权码
+            die($code);
         }
         return $response->send();
     }

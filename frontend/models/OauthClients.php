@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
 
@@ -11,14 +11,14 @@ use Yii;
  * @property string $client_secret
  * @property string $redirect_uri
  */
-class OauthClient extends \yii\db\ActiveRecord
+class OauthClients extends \common\models\OauthClient
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'oauth_client';
+        return 'oauth_clients';
     }
 
     /**

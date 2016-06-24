@@ -5,22 +5,23 @@ namespace frontend\models;
 use Yii;
 
 /**
- * This is the model class for table "oauth_refresh_token".
+ * This is the model class for table "oauth_authorization_code".
  *
- * @property string $refresh_token
+ * @property string $authorization_code
  * @property string $client_id
  * @property string $user_id
+ * @property string $redirect_uri
  * @property string $expires
  * @property string $scope
  */
-class OauthRefreshToken extends \common\models\OauthRefreshToken
+class OauthAuthorizationCodes extends \common\models\OauthAuthorizationCode
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'oauth_refresh_token';
+        return 'oauth_authorization_codes';
     }
 
     /**
@@ -29,12 +30,12 @@ class OauthRefreshToken extends \common\models\OauthRefreshToken
     public function rules()
     {
         return [
-            [['refresh_token', 'client_id'], 'required'],
+            [['authorization_code', 'client_id'], 'required'],
             [['expires'], 'safe'],
-            [['refresh_token'], 'string', 'max' => 40],
+            [['authorization_code'], 'string', 'max' => 40],
             [['client_id'], 'string', 'max' => 80],
             [['user_id'], 'string', 'max' => 255],
-            [['scope'], 'string', 'max' => 2000],
+            [['redirect_uri', 'scope'], 'string', 'max' => 2000],
         ];
     }
 
@@ -44,9 +45,10 @@ class OauthRefreshToken extends \common\models\OauthRefreshToken
     public function attributeLabels()
     {
         return [
-            'refresh_token' => 'Refresh Token',
+            'authorization_code' => 'Authorization Code',
             'client_id' => 'Client ID',
             'user_id' => 'User ID',
+            'redirect_uri' => 'Redirect Uri',
             'expires' => 'Expires',
             'scope' => 'Scope',
         ];
