@@ -67,7 +67,7 @@ class OAuth2Controller extends Controller{
             }
         }
         $is_authorized = (yii::$app->request->post('authorized') === 'yes');
-        $this->_server->handleAuthorizeRequest($request, $response, $is_authorized);
+        $this->_server->handleAuthorizeRequest($request, $response, $is_authorized, $o_user_id);
         if($is_authorized){
             $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);//授权码
             $arr = yii\helpers\ArrayHelper::toArray($request);
