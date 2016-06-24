@@ -8,19 +8,34 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \common\models\LoginForm */
+/* @var $model \frontend\models\Ouser */
+/* @var $tips */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+
+$this->title = '授权登录页';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
+<html lang="<?= Yii::$app->language ?>">
+<head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?= Html::csrfMetaTags() ?>
+    <title><?= Html::encode($this->title) ?></title>
+</head>
+<body>
+<?php $this->beginBody() ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
-
+    <?php if($tips){ ?>
+        <p style="color: #c12e2a;font: small">用户名或密码错误</p>
+    <?php }else{ ?>
+        <p>请登录：</p>
+    <?php } ?>
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
@@ -43,3 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php $this->endBody() ?>
+</body>
+</html>

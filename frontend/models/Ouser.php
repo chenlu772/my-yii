@@ -42,8 +42,9 @@ class Ouser extends \common\models\Ouser
     {
         return [
             'user_id' => 'User ID',
-            'username' => 'Username',
-            'password' => 'Password',
+            'username' => '用户名',
+            'password' => '密 码',
+            'rememberMe' => '记住我',
         ];
     }
 }

@@ -14,20 +14,34 @@ use yii\web\Controller;
 class AuthLoginController extends Controller{
 
     public function actionIndex(){
-        $client_id = yii::$app->request->get('client_id');
-        $response_type = yii::$app->request->get('response_type');
-        $state = yii::$app->request->get('state');
-        $data = array(
-            'client_id' => $client_id,
-            'response_type' => $response_type,
-            'state' => $state
-        );
-//        var_dump($data);die;
         $model = new Ouser();
-        return $this->render('index',[
-            'model'=> $model,
-            'data' => $data
+        if(yii::$app->request->isPost ){
+
+            $username = Yii::$app->request->post('Ouser')['username'];
+            $password = Yii::$app->request->post('Ouser')['password'];
+            $rememberMe = yii::$app->request->post('Ouser')['rememberMe'];
+
+            $data = $model->findOne(array('username'=>$username));
+            if( !empty($data) && md5($password) == $data['password']){
+                $data['rememberMe'] = $rememberMe;
+                $data->save();
+                yii::$app->session->set('o_user_id', $data['user_id']);
+                return $this->renderPartial('authorization');
+            }
+            else{
+                return $this->renderPartial('index',[
+                    'model'  => $model,
+                    'tips'  => true,
+                ]);
+            }
+
+        }
+        return $this->renderPartial('index',[
+            'model'  => $model,
+            'tips'  => false,
         ]);
+
+//        var_dump($data);die;
     }
 
 

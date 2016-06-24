@@ -8,6 +8,7 @@
 
 namespace frontend\controllers;
 
+use frontend\models\OauthClients;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
 use OAuth2\Request;
@@ -46,6 +47,9 @@ class OAuth2Controller extends Controller{
         return json_encode(array('success'=>true, 'message'=>'access'));
     }
 
+    /*
+     * 获取授权码
+     * */
     public function actionAuthorize(){
 
         $request = Request::createFromGlobals();
@@ -53,19 +57,24 @@ class OAuth2Controller extends Controller{
         if(!$this->_server->validateAuthorizeRequest($request, $response)){
             return $response->send();
         }
-        if(empty($_POST)){
-            return '<form method="post">
-                        <label>确认授权登录？</label><br/>
-                        <input type="submit" name="authorized" value="yes">
-                        <input type="submit" name="authorized" value="no">
-                    </form>
-                    ';
+        $o_user_id = yii::$app->session->get('o_user_id');
+        if(!yii::$app->request->isPost){
+            if(!empty($o_user_id)){
+                return $this->renderPartial('../auth-login/authorization');
+            }
+            else{
+                return $this->redirect(['auth-login/index']);
+            }
         }
         $is_authorized = (yii::$app->request->post('authorized') === 'yes');
         $this->_server->handleAuthorizeRequest($request, $response, $is_authorized);
         if($is_authorized){
             $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);//授权码
-            die($code);
+            $arr = yii\helpers\ArrayHelper::toArray($request);
+            $client_id = $arr['query']['client_id'];
+            $clientInfo = OauthClients::findOne($client_id);
+
+            return $this->redirect($clientInfo['redirect_uri'].'?code='.$code);
         }
         return $response->send();
     }
