@@ -14,7 +14,7 @@ use Yii;
  * @property string $expires
  * @property string $scope
  */
-class OauthAuthorizationCode extends \yii\db\ActiveRecord
+class OauthAuthorizationCodes extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

@@ -13,14 +13,14 @@ use Yii;
  * @property string $expires
  * @property string $scope
  */
-class OauthAccessToken extends \yii\db\ActiveRecord
+class OauthAccessTokens extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'oauth_access_token';
+        return 'oauth_access_tokens';
     }
 
     /**

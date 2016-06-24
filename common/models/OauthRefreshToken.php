@@ -13,7 +13,7 @@ use Yii;
  * @property string $expires
  * @property string $scope
  */
-class OauthRefreshToken extends \yii\db\ActiveRecord
+class OauthRefreshTokens extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

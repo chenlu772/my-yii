@@ -11,7 +11,7 @@ use Yii;
  * @property string $client_secret
  * @property string $redirect_uri
  */
-class OauthClients extends \common\models\OauthClient
+class OauthClients extends \common\models\OauthClients
 {
     /**
      * @inheritdoc

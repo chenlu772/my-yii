@@ -30,7 +30,7 @@ class Ouser extends \common\models\Ouser
     {
         return [
             [['username'], 'required'],
-            [['username', 'first_name', 'last_name'], 'string', 'max' => 255],
+            [['username'], 'string', 'max' => 255],
             [['password'], 'string', 'max' => 2000],
         ];
     }
@@ -44,8 +44,6 @@ class Ouser extends \common\models\Ouser
             'user_id' => 'User ID',
             'username' => 'Username',
             'password' => 'Password',
-            'first_name' => 'First Name',
-            'last_name' => 'Last Name',
         ];
     }
 }
