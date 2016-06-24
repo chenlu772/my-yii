@@ -77,6 +77,13 @@ class ComposerStaticInit97f60f486aee3c9bc14072d1bbd961d8
     );
 
     public static $prefixesPsr0 = array (
+        'O' => 
+        array (
+            'OAuth2' => 
+            array (
+                0 => __DIR__ . '/..' . '/bshaffer/oauth2-server-php/src',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 
