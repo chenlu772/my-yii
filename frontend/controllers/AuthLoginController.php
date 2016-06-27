@@ -14,6 +14,7 @@ use yii\web\Controller;
 class AuthLoginController extends Controller{
 
     public function actionIndex(){
+
         $model = new OauthUsers();
         if(yii::$app->request->isPost ){
 
@@ -22,7 +23,7 @@ class AuthLoginController extends Controller{
             $rememberMe = yii::$app->request->post('OauthUsers')['rememberMe'];
 
             $data = $model->findOne(array('username'=>$username));
-            if( !empty($data) && md5($password) == $data['password']){
+            if( !empty($data) && sha1($password,$data['password'])){
                 $data['rememberMe'] = $rememberMe;
                 $data->save();
                 yii::$app->session->set('o_user_id', $data['user_id']);

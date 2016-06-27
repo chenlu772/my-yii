@@ -32,7 +32,7 @@ class OAuth2Controller extends Controller{
         $storage = new Pdo(Yii::$app->params['db_param']);
         $server = new Server($storage, array('enforce_state'=>false));
         $server->addGrantType(new ClientCredentials($storage));//客户端模式
-        $server->addGrantType(new AuthorizationCode($storage));//授权码模式
+        $server->addGrantType(new AuthorizationCode($storage));//授权码模式,简化模式（将Sever.php中的allow_implicit改为true即开启简化模式）
         $server->addGrantType(new UserCredentials($storage));//密码模式
         $this->_server = $server;
 
@@ -54,7 +54,7 @@ class OAuth2Controller extends Controller{
     }
 
     /*
-     * 获取授权码
+     * 授权码模式：返回带code链接；简化模式：返回带access_token链接
      * */
     public function actionAuthorize(){
 
@@ -65,7 +65,7 @@ class OAuth2Controller extends Controller{
         }
         $o_user_id = yii::$app->session->get('o_user_id');
         if(!yii::$app->request->isPost){
-            if(!empty($o_user_id)){
+            if(!empty($o_user_id) || $request->query('response_type') == 'token'){
                 return $this->renderPartial('../auth-login/authorization');
             }
             else{
@@ -75,18 +75,21 @@ class OAuth2Controller extends Controller{
         $is_authorized = (yii::$app->request->post('authorized') === 'yes');
         $this->_server->handleAuthorizeRequest($request, $response, $is_authorized, $o_user_id);
         if($is_authorized){
-            $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);//授权码
-            $arr = yii\helpers\ArrayHelper::toArray($request);
-            $client_id = $arr['query']['client_id'];
-            $clientInfo = OauthClients::findOne($client_id);
+            if($request->query('response_type') === 'code'){
+                $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);//授权码
+                //$arr = yii\helpers\ArrayHelper::toArray($request);
+                //$client_id = $arr['query']['client_id'];
+                $client_id = $request->query('client_id');
+                $clientInfo = OauthClients::findOne($client_id);
 
-            return $this->redirect($clientInfo['redirect_uri'].'?code='.$code);
+                return $this->redirect($clientInfo['redirect_uri'].'?code='.$code);
+            }
+            else{
+                return $this->redirect($response->getHttpHeader('Location'));
+            }
         }
         return $response->send();
     }
-
-
-
 
 
 }

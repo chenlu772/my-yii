@@ -118,7 +118,7 @@ class Server implements ResourceControllerInterface,
             'token_bearer_header_name' => 'Bearer',
             'enforce_state'            => true,
             'require_exact_redirect_uri' => true,
-            'allow_implicit'           => false,
+            'allow_implicit'           => true,//true为开启简化模式，默认false
             'allow_credentials_in_request_body' => true,
             'allow_public_clients'     => true,
             'always_issue_new_refresh_token' => false,
