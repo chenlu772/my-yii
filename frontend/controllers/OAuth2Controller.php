@@ -11,6 +11,9 @@ namespace frontend\controllers;
 use frontend\models\OauthClients;
 use OAuth2\GrantType\AuthorizationCode;
 use OAuth2\GrantType\ClientCredentials;
+use OAuth2\GrantType\ImplicitTest;
+use OAuth2\GrantType\JwtBearer;
+use OAuth2\GrantType\UserCredentials;
 use OAuth2\Request;
 use OAuth2\Response;
 use OAuth2\Server;
@@ -28,17 +31,20 @@ class OAuth2Controller extends Controller{
 
         $storage = new Pdo(Yii::$app->params['db_param']);
         $server = new Server($storage, array('enforce_state'=>false));
-        $server->addGrantType(new ClientCredentials($storage));
-        $server->addGrantType(new AuthorizationCode($storage));
+        $server->addGrantType(new ClientCredentials($storage));//客户端模式
+        $server->addGrantType(new AuthorizationCode($storage));//授权码模式
+        $server->addGrantType(new UserCredentials($storage));//密码模式
         $this->_server = $server;
 
         return true;
     }
 
+    //获取access_token
     public function actionToken(){
         $this->_server->handleTokenRequest(Request::createFromGlobals())->send();
     }
 
+    //校验access_token是否合法
     public function actionResource(){
         if(!$this->_server->verifyResourceRequest(Request::createFromGlobals())){
             return $this->_server->getResponse()->send();

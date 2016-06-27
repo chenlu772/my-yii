@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "ouser".
+ * This is the model class for table "oauth_users".
  *
  * @property integer $user_id
  * @property string $username
@@ -13,14 +13,14 @@ use Yii;
  * @property string $first_name
  * @property string $last_name
  */
-class Ouser extends \yii\db\ActiveRecord
+class OauthUsers extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ouser';
+        return 'oauth_users';
     }
 
     /**

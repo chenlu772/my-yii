@@ -7,19 +7,19 @@
  */
 namespace frontend\controllers;
 
-use frontend\models\Ouser;
+use frontend\models\OauthUsers;
 use yii;
 use yii\web\Controller;
 
 class AuthLoginController extends Controller{
 
     public function actionIndex(){
-        $model = new Ouser();
+        $model = new OauthUsers();
         if(yii::$app->request->isPost ){
 
-            $username = Yii::$app->request->post('Ouser')['username'];
-            $password = Yii::$app->request->post('Ouser')['password'];
-            $rememberMe = yii::$app->request->post('Ouser')['rememberMe'];
+            $username = Yii::$app->request->post('OauthUsers')['username'];
+            $password = Yii::$app->request->post('OauthUsers')['password'];
+            $rememberMe = yii::$app->request->post('OauthUsers')['rememberMe'];
 
             $data = $model->findOne(array('username'=>$username));
             if( !empty($data) && md5($password) == $data['password']){
